@@ -9,7 +9,10 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f334da2a-cc4f-42bd-bdf9-32ac00c7c22f" name="Default Changelist" comment="" />
+    <list default="true" id="f334da2a-cc4f-42bd-bdf9-32ac00c7c22f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,7 +39,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/TaskTimerApp" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1f09yMV8HGHfALOYxQQ8t4Yi2py" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -48,7 +51,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -123,6 +126,11 @@
     </task>
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/TaskTimerApp" />
+    </ignored-roots>
+  </component>
   <component name="WindowStateProjectService">
     <state x="475" y="152" key="#com.intellij.ide.util.MemberChooser" timestamp="1595348321736">
       <screen x="0" y="0" width="1368" height="872" />
@@ -144,10 +152,10 @@
       <screen x="0" y="0" width="1368" height="872" />
     </state>
     <state width="1324" height="184" key="GridCell.Tab.0.right/0.0.1368.872@0.0.1368.872" timestamp="1595350952921" />
-    <state x="186" y="79" key="SettingsEditor" timestamp="1595347042921">
+    <state x="186" y="79" key="SettingsEditor" timestamp="1595351173467">
       <screen x="0" y="0" width="1368" height="872" />
     </state>
-    <state x="186" y="79" key="SettingsEditor/0.0.1368.872@0.0.1368.872" timestamp="1595347042921" />
+    <state x="186" y="79" key="SettingsEditor/0.0.1368.872@0.0.1368.872" timestamp="1595351173467" />
     <state x="277" y="169" key="Vcs.Push.Dialog.v2" timestamp="1595350972355">
       <screen x="0" y="0" width="1368" height="872" />
     </state>
