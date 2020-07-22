@@ -18,10 +18,10 @@ internal class AppDatabase private constructor(context: Context) : SQLiteOpenHel
         Log.d(TAG, "onCreate: starts")
 
         val sSQL = """CREATE TABLE ${TasksContract.TABLE_NAME} (
-            |${TasksContract.Columms.ID} INTEGER PRIMARY KEY NOT NULL,
-            |${TasksContract.Columms.TASK_NAME} TEXT NOT NULL,
-            |${TasksContract.Columms.TASK_DESC} TEXT,
-            |${TasksContract.Columms.TASK_ORDER} INTEGER
+            |${TasksContract.Columns.ID} INTEGER PRIMARY KEY NOT NULL,
+            |${TasksContract.Columns.TASK_NAME} TEXT NOT NULL,
+            |${TasksContract.Columns.TASK_DESC} TEXT,
+            |${TasksContract.Columns.TASK_ORDER} INTEGER
             |)""".trimMargin()
 
         Log.d(TAG, sSQL)
