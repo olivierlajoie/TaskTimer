@@ -14,7 +14,6 @@ internal class AppDatabase private constructor(context: Context) : SQLiteOpenHel
     init { Log.d(TAG, "AppDatabase: init") }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        //CREATE TABLE Tasks (_id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, desc TEXT, sortOrder INTEGER);
         Log.d(TAG, "onCreate: starts")
 
         val sSQL = """CREATE TABLE ${TasksContract.TABLE_NAME} (

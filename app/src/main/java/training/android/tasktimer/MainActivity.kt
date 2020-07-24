@@ -1,15 +1,12 @@
 package training.android.tasktimer
 
-import android.content.ContentValues
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,7 +23,7 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
 
         mTwoPane = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-        var fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
+        val fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
         if(fragment != null) showEditPane()
         else {
             task_details_container.visibility = if(mTwoPane) View.INVISIBLE else View.GONE
@@ -68,11 +65,13 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
 
         task_details_container.visibility = if(mTwoPane) View.INVISIBLE else View.GONE
         main_fragment_container.view?.visibility = View.VISIBLE
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onSaveClicked() {
         Log.d(TAG, "onSaveClicked: starts")
-        var fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
+        val fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
         removeEditPane(fragment)
     }
 
@@ -84,6 +83,10 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menumain_addTask -> taskEditRequest(null)
+            android.R.id.home -> {
+                var fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
+                removeEditPane(fragment)
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -97,5 +100,15 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
             .commit()
 
         showEditPane()
+    }
+
+    override fun onBackPressed() {
+        Log.d(TAG, "onBackPressed: starts")
+        val fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
+        if(fragment == null || mTwoPane)
+            super.onBackPressed()
+        else
+            removeEditPane(fragment)
+
     }
 }
