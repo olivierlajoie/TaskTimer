@@ -1,6 +1,7 @@
 package training.android.tasktimer
 
 import android.content.ContentValues
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -8,15 +9,29 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
+
+    private var mTwoPane = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        mTwoPane = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+        var fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
+        if(fragment != null) showEditPane()
+        else {
+            task_details_container.visibility = if(mTwoPane) View.INVISIBLE else View.GONE
+            main_fragment_container.view?.visibility = View.VISIBLE
+        }
 
         val projection = arrayOf(TasksContract.Columns.TASK_NAME, TasksContract.Columns.TASK_ORDER)
         val sortColumn = TasksContract.Columns.TASK_ORDER
@@ -36,60 +51,51 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
     }
 
-    private fun testUpdateTwo() {
-        val values = ContentValues().apply {
-            put(TasksContract.Columns.TASK_ORDER, 99)
-            put(TasksContract.Columns.TASK_DESC, "Completed")
-        }
-
-        val selection = TasksContract.Columns.TASK_ORDER + " + 2"
-        val rowAffected = contentResolver.update(TasksContract.CONTENT_URI, values, selection, null)
-        Log.d(TAG, "Updated row uri is $rowAffected")
+    private fun showEditPane() {
+        task_details_container.visibility = View.VISIBLE
+        main_fragment_container.view?.visibility = if(mTwoPane) View.VISIBLE else View.GONE
     }
 
-    private fun testUpdate() {
-        val values = ContentValues().apply {
-            put(TasksContract.Columns.TASK_NAME, "Content Provider")
-            put(TasksContract.Columns.TASK_DESC, "Record content providers videos")
+    private fun removeEditPane(fragment: Fragment? = null) {
+        Log.d(TAG, "removeEditPane: starts")
+        if(fragment != null) {
+            supportFragmentManager.beginTransaction()
+                .remove(fragment)
+                .commit()
         }
 
-        val taskUri = TasksContract.buildUriFromId(4)
-        val rowAffected = contentResolver.update(taskUri, values, null, null)
-        Log.d(TAG, "Updated row uri is $rowAffected")
+        task_details_container.visibility = if(mTwoPane) View.INVISIBLE else View.GONE
+        main_fragment_container.view?.visibility = View.VISIBLE
     }
 
-    private fun testInsert() {
-        val values = ContentValues().apply {
-            put(TasksContract.Columns.TASK_NAME, "New Task 1")
-            put(TasksContract.Columns.TASK_DESC, "Description 1")
-            put(TasksContract.Columns.TASK_ORDER, 2)
-        }
-
-        val uri = contentResolver.insert(TasksContract.CONTENT_URI, values)
-        Log.d(TAG, "New row uri is $uri")
-        Log.d(TAG, "id is ${uri?.let { TasksContract.getId(it) }}")
+    override fun onSaveClicked() {
+        Log.d(TAG, "onSaveClicked: starts")
+        var fragment = supportFragmentManager.findFragmentById(R.id.task_details_container)
+        removeEditPane(fragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.menumain_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.menumain_addTask -> taskEditRequest(null)
         }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun taskEditRequest(task: Task?) {
+        Log.d(TAG, "taskEditRequest: starts")
+        val newFragment = AddEditFragment.newInstance(task)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.task_details_container, newFragment)
+            .commit()
+
+        showEditPane()
     }
 }
