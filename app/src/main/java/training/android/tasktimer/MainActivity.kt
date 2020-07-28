@@ -12,12 +12,20 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
+class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked,
+    MainActivityFragment.OnTaskEdit {
 
     private var mTwoPane = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.maint_fragment_container, MainActivityFragment.newInstance("null","null"))
+                .commitAllowingStateLoss()
+        }
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
@@ -27,7 +35,7 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
         if(fragment != null) showEditPane()
         else {
             task_details_container.visibility = if(mTwoPane) View.INVISIBLE else View.GONE
-            main_fragment_container.view?.visibility = View.VISIBLE
+            maint_fragment_container.visibility = View.VISIBLE
         }
 
         val projection = arrayOf(TasksContract.Columns.TASK_NAME, TasksContract.Columns.TASK_ORDER)
@@ -50,9 +58,13 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
         }
     }
 
+    override fun onTaskEdit(task: Task) {
+        taskEditRequest(task)
+    }
+
     private fun showEditPane() {
         task_details_container.visibility = View.VISIBLE
-        main_fragment_container.view?.visibility = if(mTwoPane) View.VISIBLE else View.GONE
+        maint_fragment_container.visibility = if(mTwoPane) View.VISIBLE else View.GONE
     }
 
     private fun removeEditPane(fragment: Fragment? = null) {
@@ -64,7 +76,7 @@ class MainActivity : AppCompatActivity(), AddEditFragment.OnSaveClicked {
         }
 
         task_details_container.visibility = if(mTwoPane) View.INVISIBLE else View.GONE
-        main_fragment_container.view?.visibility = View.VISIBLE
+        maint_fragment_container.visibility = View.VISIBLE
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }

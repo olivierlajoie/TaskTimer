@@ -49,9 +49,8 @@ class AppProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri): String? {
-        val match = uriMatcher.match(uri)
 
-        return when (match) {
+        return when (uriMatcher.match(uri)) {
             TASKS -> TasksContract.CONTENT_TYPE
             TASKS_ID -> TasksContract.CONTENT_ITEM_TYPE
             TIMINGS -> TimingsContract.CONTENT_TYPE
@@ -137,6 +136,8 @@ class AppProvider : ContentProvider() {
             else -> throw IllegalArgumentException("Unknown Uri: $uri")
         }
 
+        if(recordId > 0) context?.contentResolver?.notifyChange(uri, null)
+
         Log.d(TAG, "Exiting insert, returning $returnUri")
         return returnUri
     }
@@ -180,6 +181,7 @@ class AppProvider : ContentProvider() {
             else -> throw IllegalArgumentException("Unknown Uri: $uri")
         }
 
+        if(count > 0) context?.contentResolver?.notifyChange(uri, null)
         Log.d(TAG, "Exiting update, return $count")
         return count
     }
@@ -223,6 +225,7 @@ class AppProvider : ContentProvider() {
             else -> throw IllegalArgumentException("Unknown Uri: $uri")
         }
 
+        if(count >0) context?.contentResolver?.notifyChange(uri, null)
         Log.d(TAG, "Exiting delete, return $count")
         return count
     }

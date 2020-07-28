@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_add_edit.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.lang.RuntimeException
@@ -21,6 +22,7 @@ private const val ARG_TASK = "task"
 class AddEditFragment : Fragment() {
     private var task: Task? = null
     private var listener: OnSaveClicked? = null
+    private val viewModel by lazy { ViewModelProvider(requireActivity()).get(AppViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: starts")
@@ -50,31 +52,17 @@ class AddEditFragment : Fragment() {
         }
     }
 
+    private fun taskFromUI(): Task {
+        val sortOrder = if (addedit_order.text.isNotEmpty()) Integer.parseInt(addedit_order.text.toString()) else 0
+        val newTask = Task(addedit_name.text.toString(), addedit_desc.text.toString(), sortOrder)
+        newTask.id = task?.id ?: 0
+        return newTask
+    }
+
     private fun saveTask() {
         Log.d(TAG, "saveTask: starts")
-        val sortOrder = if(addedit_order.text.isNotEmpty()) Integer.parseInt(addedit_order.text.toString()) else 0
-        val values = ContentValues()
-        val task = task
-
-        if(task != null) {
-            Log.d(TAG, "saveTask: updating existing task")
-            if(addedit_name.text.toString() != task.name) values.put(TasksContract.Columns.TASK_NAME, addedit_name.text.toString())
-            if(addedit_desc.text.toString() != task.name) values.put(TasksContract.Columns.TASK_DESC, addedit_desc.text.toString())
-            if(sortOrder != task.sortOrder) values.put(TasksContract.Columns.TASK_ORDER, sortOrder)
-            if(values.size() != 0) {
-                Log.d(TAG, "saveTask: updating task")
-                activity?.contentResolver?.update(TasksContract.buildUriFromId(task.id), values, null, null)
-            }
-        } else {
-            Log.d(TAG, "saveTask: new task")
-            if(addedit_name.text.isNotEmpty()) {
-                values.put(TasksContract.Columns.TASK_NAME, addedit_name.text.toString())
-                if(addedit_desc.text.isNotEmpty())
-                    values.put(TasksContract.Columns.TASK_DESC, addedit_desc.text.toString())
-                values.put(TasksContract.Columns.TASK_ORDER, sortOrder)
-                activity?.contentResolver?.insert(TasksContract.CONTENT_URI, values)
-            }
-        }
+        val newTask = taskFromUI()
+        if(newTask != task) task = viewModel.saveTask(newTask)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -96,7 +84,7 @@ class AddEditFragment : Fragment() {
         Log.d(TAG, "onAttach: starts")
         super.onAttach(context)
         if(context is OnSaveClicked) listener = context
-        else throw RuntimeException(context.toString() + "must implement OnSaveClicked")
+        else throw RuntimeException("${context}must implement OnSaveClicked")
     }
 
     override fun onDetach() {
