@@ -1,20 +1,18 @@
 package training.android.tasktimer
 
-import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.fragment_add_edit.*
-import kotlinx.android.synthetic.main.fragment_main.*
-import java.lang.RuntimeException
+
 
 private const val TAG = "AddEditFragment"
 private const val ARG_TASK = "task"
@@ -47,8 +45,11 @@ class AddEditFragment : Fragment() {
                 addedit_name.setText(task.name)
                 addedit_desc.setText(task.desc)
                 addedit_order.setText(task.sortOrder.toString())
-            } else
+                addedit_save.isEnabled = true
+            } else {
                 Log.d(TAG, "onViewCreated: adding new record")
+                addedit_save.isEnabled = false
+            }
         }
     }
 
@@ -74,6 +75,10 @@ class AddEditFragment : Fragment() {
             actionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
+        addedit_name.doAfterTextChanged {
+            activatingSave(it)
+        }
+
         addedit_save.setOnClickListener {
             saveTask()
             listener?.onSaveClicked()
@@ -95,6 +100,10 @@ class AddEditFragment : Fragment() {
 
     interface OnSaveClicked {
         fun onSaveClicked()
+    }
+
+    fun activatingSave(it: Editable?) {
+        addedit_save.isEnabled = !it.isNullOrEmpty()
     }
 
     companion object {

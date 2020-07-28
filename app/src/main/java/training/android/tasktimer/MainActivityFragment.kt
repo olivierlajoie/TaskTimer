@@ -16,7 +16,12 @@ import java.lang.RuntimeException
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class MainActivityFragment : Fragment(), CursorRecyclerViewAdapter.OnTaskClickListener {
+private const val TAG = "MainActivityFragment"
+private const val DIALOG_DELETE_ID = 1
+private const val DIALOG_TASK_ID = "task_id"
+
+
+class MainActivityFragment : Fragment(), CursorRecyclerViewAdapter.OnTaskClickListener, AppDialog.DialogEvents {
     private val viewModel by lazy { ViewModelProvider(requireActivity()).get(AppViewModel::class.java) }
     private val mAdapter = CursorRecyclerViewAdapter(null, this)
     private var param1: String? = null
@@ -41,11 +46,26 @@ class MainActivityFragment : Fragment(), CursorRecyclerViewAdapter.OnTaskClickLi
     }
 
     override fun onDeleteClick(task: Task) {
-        viewModel.deleteTasks(task.id)
+        val args = Bundle().apply {
+            putInt(DIALOG_ID, DIALOG_DELETE_ID)
+            putString(DIALOG_MESSAGE, getString(R.string.delete_dialog_message, task.id, task.name))
+            putInt(DIALOG_POSITIVE_RID, R.string.delete_dialog_positive_caption)
+            putLong(DIALOG_TASK_ID, task.id)
+        }
+
+        val dialog = AppDialog()
+        dialog.arguments = args
+        dialog.show(childFragmentManager, null)
     }
 
     override fun onLongClick(task: Task) {
         TODO("Not yet implemented")
+    }
+
+    override fun onPositiveDialogResult(dialogId: Int, args: Bundle) {
+        if(dialogId == DIALOG_DELETE_ID) {
+            viewModel.deleteTasks(args.getLong(DIALOG_TASK_ID))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
