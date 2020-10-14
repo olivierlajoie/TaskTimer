@@ -24,9 +24,16 @@
     <string name="addedit_order">Task Order (number)</string>
     <string name="addedit_save_title">Save</string>
     <string name="instructions_title">Instructions</string>
-    <string name="instructions_desc">Use the add button (+) in the toolbar above to create new tasks. Tasks with lower sort orders will be placed higher up the list.Tasks with the same sort order will be sorted alphabetically. Tapping a task will start the timer for that task (and will stop the timer for any previous task that was being timed). Each task has Edit and Delete buttons if you want to change the details or remove the task.</string>
+    <string name="instructions_desc">Use the add button (+) in the toolbar above to create new tasks. \n\nTasks with lower sort orders will be placed higher up the list.Tasks with the same sort order will be sorted alphabetically. \n\nTapping a task will start the timer for that task (and will stop the timer for any previous task that was being timed). \n\nEach task has Edit and Delete buttons if you want to change the details or remove the task.</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="delete_dialog_message">Deleting will also delete all timing data associated with task id %1$d: %2$s.</string>
     <string name="delete_dialog_positive_caption">DELETE</string>
+    <string name="cancel_dialog_message">You have unsaved changes. Do you want to abandon those changes?</string>
+    <string name="cancel_dialog_positive">Abandon changes</string>
+    <string name="cancel_dialog_negative">Continue editing</string>
+    <string name="about_copyright">Copyright © 2020 Olivier Lajoie</string>
+    <string name="about_weblink">Instructions available at www.learnprogramming.academy</string>
+    <string name="about_email">Contact me at olivier.lajoie@gmail.com</string>
+    <string name="about_credits">Application icon <b>derived</b> from icons8.com by <b>Anonymous</b></string>
 </resources>

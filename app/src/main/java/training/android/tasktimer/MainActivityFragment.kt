@@ -1,17 +1,17 @@
 package training.android.tasktimer
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_main.*
-import java.lang.RuntimeException
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -59,7 +59,7 @@ class MainActivityFragment : Fragment(), CursorRecyclerViewAdapter.OnTaskClickLi
     }
 
     override fun onLongClick(task: Task) {
-        TODO("Not yet implemented")
+        viewModel.timeTask(task)
     }
 
     override fun onPositiveDialogResult(dialogId: Int, args: Bundle) {
@@ -68,18 +68,17 @@ class MainActivityFragment : Fragment(), CursorRecyclerViewAdapter.OnTaskClickLi
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated starts")
         super.onViewCreated(view, savedInstanceState)
 
         task_list.layoutManager = LinearLayoutManager(context)
         task_list.adapter = mAdapter
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        task_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
     }
 
     override fun onAttach(context: Context) {

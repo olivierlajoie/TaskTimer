@@ -94,9 +94,4 @@ class AppDialog : AppCompatDialogFragment() {
         val dialogId = requireArguments().getInt(DIALOG_ID)
 //        dialogEvents?.onDialogCancelled(dialogId)
     }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        Log.d(TAG, "onDismiss called")
-        super.onDismiss(dialog)
-    }
 }

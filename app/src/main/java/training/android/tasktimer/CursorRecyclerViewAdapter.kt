@@ -5,8 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewParent
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.task_list_items.view.*
 import java.lang.IllegalStateException
 
@@ -19,6 +24,11 @@ class TaskViewHolder(override val containerView: View) :
         itemView.tli_desc.text = task.desc
         itemView.tli_edit.visibility = View.VISIBLE
         itemView.tli_delete.visibility = View.VISIBLE
+
+        if(itemView.tli_desc.text.isNullOrEmpty())
+            itemView.tli_desc.visibility = View.GONE
+        else
+            itemView.tli_desc.visibility = View.VISIBLE
 
         itemView.tli_edit.setOnClickListener { listener.onEditClick(task) }
         itemView.tli_delete.setOnClickListener { listener.onDeleteClick(task) }
@@ -48,12 +58,19 @@ class CursorRecyclerViewAdapter(private var cursor: Cursor?, private val listene
 
         val cursor = cursor     // avoid problems with smart cast
 
+        if (position % 2 == 1)
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorSecondaryRecycler))
+        else
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.colorPrimaryRecycler))
+
         if(cursor == null || cursor.count == 0) {
             Log.d(TAG, "onBindViewHolder: providing instructions")
+            holder.itemView.current_task.setText(R.string.no_task_message)
             holder.itemView.tli_name.setText(R.string.instructions_title)
             holder.itemView.tli_desc.setText(R.string.instructions_desc)
             holder.itemView.tli_edit.visibility = View.GONE
             holder.itemView.tli_delete.visibility = View.GONE
+            holder.itemView.tli_desc.visibility = View.VISIBLE
         } else {
             if(!cursor.moveToPosition(position)) {
                 throw IllegalStateException("Couldn't move cursor to position $position")
@@ -67,8 +84,12 @@ class CursorRecyclerViewAdapter(private var cursor: Cursor?, private val listene
             // Remember that the id isn't set in the constructor
             task.id = cursor.getLong(cursor.getColumnIndex(TasksContract.Columns.ID))
 
-            holder.bind(task, listener)
+            if(cursor.isFirst)
+                holder.itemView.current_task.visibility = View.VISIBLE
+            else
+                holder.itemView.current_task.visibility = View.GONE
 
+            holder.bind(task, listener)
         }
     }
 

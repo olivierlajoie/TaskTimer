@@ -3,44 +3,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:minHeight="50sp"
+    tools:visibility="visible">
 
     <TextView
-        android:id="@+id/tli_name"
-        android:layout_width="0dp"
+        android:id="@+id/current_task"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginBottom="16dp"
+        android:text="@string/no_task_message"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/tli_edit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="TaskTimer Application" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tli_desc"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tli_name"
+        app:layout_constraintEnd_toStartOf="@+id/tli_edit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tli_name"
-        tools:text="Write course notes" />
+        app:layout_constraintTop_toBottomOf="@+id/current_task">
+
+        <TextView
+            android:id="@+id/tli_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Homeworks to do soon 9 till 11" />
+
+        <TextView
+            android:id="@+id/tli_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tli_name"
+            tools:text="Write course notes 9 till 11"
+            tools:visibility="gone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/tli_edit"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
+        android:background="?android:attr/textColorTertiary"
         android:text="@string/tli_edit_title"
+        android:textColor="@color/design_default_color_on_primary"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/tli_delete"
         app:layout_constraintEnd_toStartOf="@+id/tli_delete"
@@ -48,13 +78,16 @@
 
     <Button
         android:id="@+id/tli_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
         android:layout_marginEnd="8dp"
+        android:background="?android:attr/textColorTertiary"
         android:text="@string/tli_delete_title"
+        android:textColor="@color/design_default_color_on_primary"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tli_desc"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tli_name"
-        app:layout_constraintVertical_bias="0.512" />
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

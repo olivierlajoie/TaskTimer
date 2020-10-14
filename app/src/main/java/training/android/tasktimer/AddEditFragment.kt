@@ -60,6 +60,11 @@ class AddEditFragment : Fragment() {
         return newTask
     }
 
+    fun isDirty(): Boolean {
+        var newTask = taskFromUI()
+        return ((newTask != task))
+    }
+
     private fun saveTask() {
         Log.d(TAG, "saveTask: starts")
         val newTask = taskFromUI()
